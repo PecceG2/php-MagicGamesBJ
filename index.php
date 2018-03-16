@@ -7,6 +7,6 @@ deleteallcookies();
 
 
 echo('Hubo un error! Index.php');
-
+afssaffasfasfasfsasaffasfsafsa
 ?>
 
