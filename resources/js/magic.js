@@ -225,7 +225,6 @@ $(document).ready(function () {
             });
         }
     }
-
     //
     //   Key events
     //
