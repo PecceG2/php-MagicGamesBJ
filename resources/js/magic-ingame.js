@@ -19,59 +19,67 @@ $(document).ready(function () {
             success: function (data) {
                 var a_data = data.split(",");
                 youpnum = "#p" + a_data['2'];
-                if (a_data[6] == a_data[7] == a_data[8] == a_data[9] && a_data[9] != "0") {
-                    var str_winner = "GANA ";
-                    switch (a_data[6]) {
-                        case 0:
-                            str_winner += "EL JUGADOR 1";
-                            break;
-                        case 1:
-                            str_winner += "EL JUGADOR 2";
-                            break;
-                        case 2:
-                            str_winner += "EL JUGADOR 3";
-                            break;
-                        case 3:
-                            str_winner += "EL JUGADOR 4";
-                            break;
-                        case 4:
-                            str_winner += "LA CASA";
-                            break;
-                    }
-                    $(".playerbox").html(str_winner);
-                    setTimeout(function () {
-
-                    }, 5000);
-                } else {
-                    if (a_data['10'] != "") {
-                        $("#home").html("CASA: " + a_data['10']);
-                    }
-                    if (a_data['4'] > "1") {
-                        $("#content").show();
-                        $("#waiting").hide();
-                        if (a_data['5'] == a_data['2']) {
-                            //su turno
-                            $("#actions").show();
-
-                        } else {
-                            $("#actions").hide();
+                //if(a_data[6]!=0){
+                    if(a_data[6] == a_data[7] && a_data[8] == a_data[9] && a_data[7] == a_data[8] && a_data[8]!="0"){
+                        var str_winner = "GANA ";
+                        var selector_id = "#p";
+                        switch (a_data[6]) {
+                            case "0":
+                                selector_id += "1";
+                                break;
+                            case "1":
+                                selector_id += "2";
+                                break;
+                            case "2":
+                                selector_id += "3";
+                                break;
+                            case "3":
+                                selector_id += "4";
+                                break;
+                            case "4":
+                                $("#home").html("CASA: " + a_data['10']);
+                                selector_id = "#home";
+                                break;
                         }
-                        for (var i = 1; i <= 4; i++) {
-                            var pnum = "#p" + i;
-                            if (i == a_data['5']) {
-                                $(pnum).addClass('selectedpl');
+
+                        $(selector_id).append("--> GANADOR");
+                        setTimeout(function () {
+                            $.ajax({
+                                url: 'assets/ajax/ajax.php?finish'
+                            });
+                            $(selector_id).html("0");
+                        }, 5000);
+                    } else {
+                        if (a_data['10'] != "") {
+                            $("#home").html("CASA: " + a_data['10']);
+                        }
+                        if (a_data['4'] > "1") {
+                            $("#content").show();
+                            $("#waiting").hide();
+                            if (a_data['5'] == a_data['2']) {
+                                //su turno
+                                $("#actions").show();
+
                             } else {
-                                //$(pnum).removeClass('selectedpl');
-                                $(pnum).addClass('playerbox');
+                                $("#actions").hide();
                             }
-                            if (a_data[5 + i] != 0) {
-                                $(pnum).html(a_data[5 + i]);
-                            } else {
-                                $(pnum).html("0");
+                            for (var i = 1; i <= 4; i++) {
+                                var pnum = "#p" + i;
+                                if (i == a_data['5']) {
+                                    $(pnum).addClass('selectedpl');
+                                } else {
+                                    //$(pnum).removeClass('selectedpl');
+                                    $(pnum).addClass('playerbox');
+                                }
+                                if (a_data[5 + i] != 0) {
+                                    $(pnum).html(a_data[5 + i]);
+                                } else {
+                                    $(pnum).html("0");
+                                }
                             }
                         }
                     }
-                }
+               // }
                 //alert(data);
             },
             complete: function () {

@@ -101,7 +101,7 @@ $(document).ready(function() {
                 swal.showLoading()
             }
         }).then((result) => {
-            if (result.dismiss === swal.DismissReason.timer;){
+            if (result.dismiss === swal.DismissReason.timer){
             sweetAlert('Sala no encontrada', 'Lo lamentamos, no pudimos encontrar la sala solicitada. Verifica el estado de los servidores en status.magicgames.com', 'error');
             }
     })
@@ -182,14 +182,14 @@ $(document).ready(function() {
                             $("#authmenu").hide();
                             $("#index-content").fadeIn(300);
                             break;
-                        case "2";:
+                        case "2":
                             //user exists
                             swal.close();
                             swal ( "Usuario ya registrado" ,  "El nombre de usuario o email ya está vinculado a una cuenta. Prueba con otro." ,  "error" );
                             $( ".loader" ).hide();
                             $("#index-content").fadeIn(300);
                             break;
-                        case "3";:
+                        case "3":
                             //Invalid email
                             swal.close();
                             swal ( "Email inválido" ,  "A modo de evitar el fraude online y prevenir los robos de cuentas necesitamos que proporcione un email válido." ,  "error" );

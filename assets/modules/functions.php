@@ -309,12 +309,27 @@ function playhouse($identifycode)
         $a_rv_playingcards[4] = getrealvalue($a_playingcardshouse);
     }
     $str_cardshouse = implode(" ", $a_playingcardshouse);
+    if($a_rv_playingcards[4]>21){
+        $a_rv_playingcards[4]=0;
+    }
     //--- WINNER --//
     $a_winner = maximum($a_rv_playingcards);
     $int_winner = $a_winner["i"];
     $sql_playhouse = "UPDATE `barajas` INNER JOIN `users_x_sala` ON (`users_x_sala`.sala_id = `barajas`.`id_salas`) SET `cartas_casa`='$str_cardshouse', `cartas_p1` = '$int_winner', `cartas_p2` = '$int_winner', `cartas_p3` = '$int_winner', `cartas_p4` = '$int_winner' WHERE `users_x_sala`.`user_id` = '$identifycode'";
     mysqli_query($link, $sql_playhouse);
-    //reiniciar($identifycode);
+}
+
+function reloadgame($identifycode){
+    require("../config/database.php");
+    if (!empty($config['hostname'])) {
+        $link = mysqli_connect($config['hostname'], $config['dbuser'], $config['dbpasswd'], $config['dbname'], $config['dbport']);
+    }
+    $stnzd_identifycode = mysqli_real_escape_string($link, $identifycode);
+    $sql_verifyrestart = "SELECT `id_salas` FROM `barajas` INNER JOIN `users_x_sala` ON (`users_x_sala`.sala_id = `barajas`.`id_salas`) WHERE `cartas_p1`=`cartas_p2` AND `cartas_p3`=`cartas_p4` AND `cartas_p2`=`cartas_p3` AND `cartas_p1`!='0' AND `users_x_sala`.`user_id` = '$stnzd_identifycode'";
+    if(mysqli_num_rows(mysqli_query($link, $sql_verifyrestart))>=1){
+        reiniciar($stnzd_identifycode);
+    }
+
 }
 
 function maximum($list)
@@ -336,7 +351,7 @@ function reiniciar($identifycode)
     if (!empty($config['hostname'])) {
         $link = mysqli_connect($config['hostname'], $config['dbuser'], $config['dbpasswd'], $config['dbname'], $config['dbport']);
     }
-    $sql_restart = "UPDATE `barajas` INNER JOIN `salas` ON `barajas`.id_salas=`salas`.id INNER JOIN `users_x_sala` ON (`users_x_sala`.`sala_id`=`salas`.`id`) SET `barajas`.cartas='$baraja', `barajas`.cartas_p1='0', `barajas`.cartas_p2='0', `barajas`.cartas_p3='0', `barajas`.cartas_p4='0' WHERE `users_x_sala`.`user_id`='$identifycode'";
+    $sql_restart = "UPDATE `barajas` INNER JOIN `salas` ON `barajas`.id_salas=`salas`.id INNER JOIN `users_x_sala` ON (`users_x_sala`.`sala_id`=`salas`.`id`) SET `barajas`.cartas='$baraja', `barajas`.cartas_p1='0', `barajas`.cartas_p2='0', `barajas`.cartas_p3='0', `barajas`.cartas_p4='0', `barajas`.cartas_casa=NULL WHERE `users_x_sala`.`user_id`='$identifycode'";
     $result = mysqli_query($link, $sql_restart);
     mysqli_close($link);
 }

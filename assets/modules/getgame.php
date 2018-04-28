@@ -70,6 +70,8 @@ if ($a_gameinfo['players'] > 1) {
             <button type="button" id="btn-pedircarta">Pedir carta</button>
             <button type="button" id="btn-plantarse">Plantarse</button>
         </div>
+        <h5>No pude agregar las cartas, la primera letra es el palo (P: Picas, C: Corazones, D: Diamantes, T: Tréboles, la segunda es el número.</h5>
+        <p>El diseño te lo debo :b</p>
     </div>
 </div>
 <script src="resources/js/magic-ingame.js"></script>

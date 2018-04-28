@@ -34,8 +34,8 @@ if (isSet($_GET['pedircarta'])) {
     echo(crearsala($_POST['name']));
 } else if (isSet($_GET['joinplayer'])) {
     echo(joinplayer($_COOKIE['cookiecode'], $_COOKIE['identifycode'], $_POST['salacode']));
-} else if (isSet($_GET['firstshowcontent'])) {
-
+} else if (isSet($_GET['finish'])) {
+    reloadgame($_COOKIE['identifycode']);
 } else {
     //Null action
     echo 'Silence is golden..';
