@@ -167,9 +167,7 @@ function plantarse($identifycode, $cookiecode)
         if (mysqli_affected_rows($link) == 1) {
             $int_lastid = mysqli_insert_id($link);
             //Last player finished
-            playhouse($stnzd_identifycode, $stnzd_cookiecode);
-            ganador();
-            reiniciar($stnzd_identifycode);
+            playhouse($stnzd_identifycode);
         } else {
             echo('Internal exception: Invalid recived data');
             //echo($sql_cambiarturno);
@@ -283,14 +281,17 @@ function getrealvalue($cartas)
     return $suma;
 }
 
-function playhouse($identifycode, $cookiecode)
+function playhouse($identifycode)
 {
     require("../config/database.php");
     if (!empty($config['hostname'])) {
         $link = mysqli_connect($config['hostname'], $config['dbuser'], $config['dbpasswd'], $config['dbname'], $config['dbport']);
     }
-    $sql_select_cards = "SELECT * FROM barajas WHERE";
+    $sql_select_cards = "SELECT `cartas` FROM `barajas` INNER JOIN `users_x_sala` ON (`users_x_sala`.sala_id = `barajas`.`id_salas`) WHERE `users_x_sala`.`user_id` = '$identifycode'";
+
     $sql_play = "";
+    ganador();
+    reiniciar($identifycode);
 }
 
 function reiniciar($identifycode)
